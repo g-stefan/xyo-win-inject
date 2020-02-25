@@ -1,0 +1,3 @@
+--lib xyo-win-inject
+--source-is-separate
+--use-project=xyo-win.static

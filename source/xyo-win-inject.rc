@@ -1,0 +1,16 @@
+//
+// XYO Win Inject
+//
+// Copyright (c) 2020 Grigore Stefan <g_stefan@yahoo.com>
+// Created by Grigore Stefan <g_stefan@yahoo.com>
+//
+// MIT License (MIT) <http://opensource.org/licenses/MIT>
+//
+
+#include "xyo-application-version--os-windows-rc.hpp"
+#include "xyo-win-inject-version.hpp"
+#include "xyo-win-inject-copyright.hpp"
+
+XYO_APPLICATION_VERSION_INFO(XYO_WIN_INJECT,"xyo-win-inject.dll","XYO Win Inject")
+
+
