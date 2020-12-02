@@ -246,6 +246,7 @@ namespace XYO {
 
 					Context.ContextFlags = CONTEXT_CONTROL;
 					if(!GetThreadContext(hThread, &Context)) {
+						VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
 						return FALSE;
 					};
 
@@ -253,7 +254,12 @@ namespace XYO {
 
 					FillMemory(ThisMem, 4096, 0xC3); // ret
 
-					ptr_LoadLibraryA = (DWORD)GetProcAddress(GetModuleHandle("KERNEL32.DLL"), "LoadLibraryA");
+					HMODULE hKernel32 = GetModuleHandle("KERNEL32.DLL");
+					if(hKernel32 == NULL) {
+						VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
+						return FALSE;
+					};
+					ptr_LoadLibraryA = (DWORD64)GetProcAddress(hKernel32, "LoadLibraryA");
 					ptr_Str = (DWORD)&PocessMem[idx_ptr_str];
 					ptr_ptr_LoadLibraryA = (DWORD)&PocessMem[idx_ptr_ptr_loadlibrary];
 					ptr_ThreadEntryPoint = (DWORD)&PocessMem[idx_ptr_thread_entrypoint];
@@ -299,6 +305,7 @@ namespace XYO {
 					ip += 4;
 
 					if(!WriteProcessMemory(hProcess, PocessMem, ThisMem, 4096, NULL)) {
+						VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
 						return FALSE;
 					};
 
@@ -306,12 +313,14 @@ namespace XYO {
 
 					Context.ContextFlags = CONTEXT_CONTROL;
 					if(!GetThreadContext(hThread, &Context)) {
+						VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
 						return FALSE;
 					};
 
 					Context.Eip = (DWORD)PocessMem;
 
 					if(!SetThreadContext(hThread, &Context)) {
+						VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
 						return FALSE;
 					};
 
@@ -336,12 +345,13 @@ namespace XYO {
 					INT ip;
 
 					PocessMem = (BYTE *)VirtualAllocEx(hProcess, 0, 4096, MEM_RESERVE | MEM_COMMIT, PAGE_EXECUTE_READWRITE);
-					if(PocessMem == NULL) {
-						return FALSE;
+					if(PocessMem == NULL) {						
+  						return FALSE;
 					};
 
 					Context.ContextFlags = CONTEXT_CONTROL;
 					if(!GetThreadContext(hThread, &Context)) {
+						VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
 						return FALSE;
 					};
 
@@ -349,7 +359,12 @@ namespace XYO {
 
 					FillMemory(ThisMem, 4096, 0xC3); // ret
 
-					ptr_LoadLibraryA = (DWORD64)GetProcAddress(GetModuleHandle("KERNEL32.DLL"), "LoadLibraryA");
+					HMODULE hKernel32 = GetModuleHandle("KERNEL32.DLL");
+					if(hKernel32 == NULL) {
+						VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
+						return FALSE;
+					};
+					ptr_LoadLibraryA = (DWORD64)GetProcAddress(hKernel32, "LoadLibraryA");
 					ptr_Str = (DWORD64)&PocessMem[idx_ptr_str];
 					ptr_ptr_LoadLibraryA = (DWORD64)&PocessMem[idx_ptr_ptr_loadlibrary];
 					ptr_ThreadEntryPoint = (DWORD64)&PocessMem[idx_ptr_thread_entrypoint];
@@ -429,6 +444,7 @@ namespace XYO {
 					ip += 1;
 
 					if(!WriteProcessMemory(hProcess, PocessMem, ThisMem, 4096, NULL)) {
+						VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
 						return FALSE;
 					};
 
@@ -436,12 +452,14 @@ namespace XYO {
 
 					Context.ContextFlags = CONTEXT_CONTROL;
 					if(!GetThreadContext(hThread, &Context)) {
+						VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
 						return FALSE;
 					};
 
 					Context.Rip = (DWORD64)PocessMem;
 
 					if(!SetThreadContext(hThread, &Context)) {
+						VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
 						return FALSE;
 					};
 
