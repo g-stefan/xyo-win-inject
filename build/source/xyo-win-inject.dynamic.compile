@@ -1,4 +1,4 @@
 --dll xyo-win-inject
---source-is-separate
+--build-include
 --no-version
 --use-project=xyo-win

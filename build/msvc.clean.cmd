@@ -7,7 +7,7 @@ rem --- clean
 
 echo -^> clean xyo-win-inject
 
-if exist bin\ rmdir /Q /S bin
-if exist build\ rmdir /Q /S build
-if exist lib\ rmdir /Q /S lib
+if exist output\ rmdir /Q /S output
+if exist temp\ rmdir /Q /S temp
+
 if exist .vscode\ipch\ rmdir /Q /S .vscode\ipch
