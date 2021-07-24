@@ -10,10 +10,10 @@
 #ifndef XYO_WIN_INJECT_VERSION_HPP
 #define XYO_WIN_INJECT_VERSION_HPP
 
-#define XYO_WIN_INJECT_VERSION_ABCD                 1,5,0,6
-#define XYO_WIN_INJECT_VERSION_STR                 "1.5.0"
-#define XYO_WIN_INJECT_VERSION_STR_BUILD           "6"
-#define XYO_WIN_INJECT_VERSION_STR_DATETIME        "2021-07-06 15:11:51"
+#define XYO_WIN_INJECT_VERSION_ABCD                 1,6,0,8
+#define XYO_WIN_INJECT_VERSION_STR                 "1.6.0"
+#define XYO_WIN_INJECT_VERSION_STR_BUILD           "8"
+#define XYO_WIN_INJECT_VERSION_STR_DATETIME        "2021-07-23 16:34:05"
 
 #ifndef XYO_RC
 
