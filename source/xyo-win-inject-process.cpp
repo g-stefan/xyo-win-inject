@@ -17,36 +17,36 @@ namespace XYO {
 			namespace Process {
 
 				BOOL injectDll(char *cmdLine, const char *dllFile) {
-					STARTUPINFO     SInfo;
+					STARTUPINFO SInfo;
 					PROCESS_INFORMATION PInfo;
 					ZeroMemory(&SInfo, sizeof(SInfo));
 					return createProcessA(0, cmdLine, 0, 0, FALSE, 0, 0, 0, &SInfo, &PInfo, dllFile);
 				};
 
 				BOOL injectDllAndWait(char *cmdLine, const char *dllFile) {
-					STARTUPINFO     SInfo;
+					STARTUPINFO SInfo;
 					PROCESS_INFORMATION PInfo;
 					BOOL retVal;
 					ZeroMemory(&SInfo, sizeof(SInfo));
 					retVal = createProcessA(0, cmdLine, 0, 0, FALSE, 0, 0, 0, &SInfo, &PInfo, dllFile);
-					if(retVal) {
+					if (retVal) {
 						WaitForSingleObject(PInfo.hThread, INFINITE);
 					};
 					return retVal;
 				};
 
 				BOOL createProcessA(
-					LPCTSTR lpApplicationName,
-					LPTSTR lpCommandLine,
-					LPSECURITY_ATTRIBUTES lpProcessAttributes,
-					LPSECURITY_ATTRIBUTES lpThreadAttributes,
-					BOOL bInheritHandles,
-					DWORD dwCreationFlags,
-					LPVOID lpEnvironment,
-					LPCTSTR lpCurrentDirectory,
-					LPSTARTUPINFOA lpStartupInfo,
-					LPPROCESS_INFORMATION lpProcessInformation,
-					const char *dllFile) {
+				    LPCTSTR lpApplicationName,
+				    LPTSTR lpCommandLine,
+				    LPSECURITY_ATTRIBUTES lpProcessAttributes,
+				    LPSECURITY_ATTRIBUTES lpThreadAttributes,
+				    BOOL bInheritHandles,
+				    DWORD dwCreationFlags,
+				    LPVOID lpEnvironment,
+				    LPCTSTR lpCurrentDirectory,
+				    LPSTARTUPINFOA lpStartupInfo,
+				    LPPROCESS_INFORMATION lpProcessInformation,
+				    const char *dllFile) {
 
 					BOOL retVal;
 					BOOL isSuspended;
@@ -54,21 +54,20 @@ namespace XYO {
 					isSuspended = ((dwCreationFlags & CREATE_SUSPENDED) == CREATE_SUSPENDED);
 
 					retVal = (CreateProcessA(
-								lpApplicationName,
-								lpCommandLine,
-								lpProcessAttributes,
-								lpThreadAttributes,
-								bInheritHandles,
-								dwCreationFlags | CREATE_SUSPENDED,
-								lpEnvironment,
-								lpCurrentDirectory,
-								lpStartupInfo,
-								lpProcessInformation
-							) == TRUE);
+					              lpApplicationName,
+					              lpCommandLine,
+					              lpProcessAttributes,
+					              lpThreadAttributes,
+					              bInheritHandles,
+					              dwCreationFlags | CREATE_SUSPENDED,
+					              lpEnvironment,
+					              lpCurrentDirectory,
+					              lpStartupInfo,
+					              lpProcessInformation) == TRUE);
 
-					if(retVal) {
-						if(injectDllDirect(lpProcessInformation->hProcess, lpProcessInformation->hThread, dllFile)) {
-							if(isSuspended) {
+					if (retVal) {
+						if (injectDllDirect(lpProcessInformation->hProcess, lpProcessInformation->hThread, dllFile)) {
+							if (isSuspended) {
 							} else {
 								ResumeThread(lpProcessInformation->hThread);
 							};
@@ -81,38 +80,37 @@ namespace XYO {
 				};
 
 				BOOL createProcessW(
-					LPCWSTR lpApplicationName,
-					LPWSTR lpCommandLine,
-					LPSECURITY_ATTRIBUTES lpProcessAttributes,
-					LPSECURITY_ATTRIBUTES lpThreadAttributes,
-					BOOL bInheritHandles,
-					DWORD dwCreationFlags,
-					LPVOID lpEnvironment,
-					LPCWSTR lpCurrentDirectory,
-					LPSTARTUPINFOW lpStartupInfo,
-					LPPROCESS_INFORMATION lpProcessInformation,
-					const char *dllFile) {
+				    LPCWSTR lpApplicationName,
+				    LPWSTR lpCommandLine,
+				    LPSECURITY_ATTRIBUTES lpProcessAttributes,
+				    LPSECURITY_ATTRIBUTES lpThreadAttributes,
+				    BOOL bInheritHandles,
+				    DWORD dwCreationFlags,
+				    LPVOID lpEnvironment,
+				    LPCWSTR lpCurrentDirectory,
+				    LPSTARTUPINFOW lpStartupInfo,
+				    LPPROCESS_INFORMATION lpProcessInformation,
+				    const char *dllFile) {
 
 					BOOL retVal;
 					BOOL isSuspended;
 					isSuspended = ((dwCreationFlags & CREATE_SUSPENDED) == CREATE_SUSPENDED);
 
 					retVal = (CreateProcessW(
-								lpApplicationName,
-								lpCommandLine,
-								lpProcessAttributes,
-								lpThreadAttributes,
-								bInheritHandles,
-								dwCreationFlags | CREATE_SUSPENDED,
-								lpEnvironment,
-								lpCurrentDirectory,
-								lpStartupInfo,
-								lpProcessInformation
-							) == TRUE);
+					              lpApplicationName,
+					              lpCommandLine,
+					              lpProcessAttributes,
+					              lpThreadAttributes,
+					              bInheritHandles,
+					              dwCreationFlags | CREATE_SUSPENDED,
+					              lpEnvironment,
+					              lpCurrentDirectory,
+					              lpStartupInfo,
+					              lpProcessInformation) == TRUE);
 
-					if(retVal) {
-						if(injectDllDirect(lpProcessInformation->hProcess, lpProcessInformation->hThread, dllFile)) {
-							if(isSuspended) {
+					if (retVal) {
+						if (injectDllDirect(lpProcessInformation->hProcess, lpProcessInformation->hThread, dllFile)) {
+							if (isSuspended) {
 							} else {
 								ResumeThread(lpProcessInformation->hThread);
 							};
@@ -120,24 +118,23 @@ namespace XYO {
 							TerminateProcess(lpProcessInformation->hProcess, 0);
 							retVal = FALSE;
 						};
-
 					};
 					return retVal;
 				};
 
 				BOOL createProcessAsUserA(
-					HANDLE hToken,
-					LPCTSTR lpApplicationName,
-					LPTSTR lpCommandLine,
-					LPSECURITY_ATTRIBUTES lpProcessAttributes,
-					LPSECURITY_ATTRIBUTES lpThreadAttributes,
-					BOOL bInheritHandles,
-					DWORD dwCreationFlags,
-					LPVOID lpEnvironment,
-					LPCTSTR lpCurrentDirectory,
-					LPSTARTUPINFOA lpStartupInfo,
-					LPPROCESS_INFORMATION lpProcessInformation,
-					const char *dllFile) {
+				    HANDLE hToken,
+				    LPCTSTR lpApplicationName,
+				    LPTSTR lpCommandLine,
+				    LPSECURITY_ATTRIBUTES lpProcessAttributes,
+				    LPSECURITY_ATTRIBUTES lpThreadAttributes,
+				    BOOL bInheritHandles,
+				    DWORD dwCreationFlags,
+				    LPVOID lpEnvironment,
+				    LPCTSTR lpCurrentDirectory,
+				    LPSTARTUPINFOA lpStartupInfo,
+				    LPPROCESS_INFORMATION lpProcessInformation,
+				    const char *dllFile) {
 
 					BOOL retVal;
 					BOOL isSuspended;
@@ -145,22 +142,21 @@ namespace XYO {
 					isSuspended = ((dwCreationFlags & CREATE_SUSPENDED) == CREATE_SUSPENDED);
 
 					retVal = (CreateProcessAsUserA(
-								hToken,
-								lpApplicationName,
-								lpCommandLine,
-								lpProcessAttributes,
-								lpThreadAttributes,
-								bInheritHandles,
-								dwCreationFlags | CREATE_SUSPENDED,
-								lpEnvironment,
-								lpCurrentDirectory,
-								lpStartupInfo,
-								lpProcessInformation
-							) == TRUE);
+					              hToken,
+					              lpApplicationName,
+					              lpCommandLine,
+					              lpProcessAttributes,
+					              lpThreadAttributes,
+					              bInheritHandles,
+					              dwCreationFlags | CREATE_SUSPENDED,
+					              lpEnvironment,
+					              lpCurrentDirectory,
+					              lpStartupInfo,
+					              lpProcessInformation) == TRUE);
 
-					if(retVal) {
-						if(injectDllDirect(lpProcessInformation->hProcess, lpProcessInformation->hThread, dllFile)) {
-							if(isSuspended) {
+					if (retVal) {
+						if (injectDllDirect(lpProcessInformation->hProcess, lpProcessInformation->hThread, dllFile)) {
+							if (isSuspended) {
 							} else {
 								ResumeThread(lpProcessInformation->hThread);
 							};
@@ -173,40 +169,39 @@ namespace XYO {
 				};
 
 				BOOL createProcessAsUserW(
-					HANDLE hToken,
-					LPCWSTR lpApplicationName,
-					LPWSTR lpCommandLine,
-					LPSECURITY_ATTRIBUTES lpProcessAttributes,
-					LPSECURITY_ATTRIBUTES lpThreadAttributes,
-					BOOL bInheritHandles,
-					DWORD dwCreationFlags,
-					LPVOID lpEnvironment,
-					LPCWSTR lpCurrentDirectory,
-					LPSTARTUPINFOW lpStartupInfo,
-					LPPROCESS_INFORMATION lpProcessInformation,
-					const char *dllFile) {
+				    HANDLE hToken,
+				    LPCWSTR lpApplicationName,
+				    LPWSTR lpCommandLine,
+				    LPSECURITY_ATTRIBUTES lpProcessAttributes,
+				    LPSECURITY_ATTRIBUTES lpThreadAttributes,
+				    BOOL bInheritHandles,
+				    DWORD dwCreationFlags,
+				    LPVOID lpEnvironment,
+				    LPCWSTR lpCurrentDirectory,
+				    LPSTARTUPINFOW lpStartupInfo,
+				    LPPROCESS_INFORMATION lpProcessInformation,
+				    const char *dllFile) {
 
 					BOOL retVal;
 					BOOL isSuspended;
 					isSuspended = ((dwCreationFlags & CREATE_SUSPENDED) == CREATE_SUSPENDED);
 
 					retVal = (CreateProcessAsUserW(
-								hToken,
-								lpApplicationName,
-								lpCommandLine,
-								lpProcessAttributes,
-								lpThreadAttributes,
-								bInheritHandles,
-								dwCreationFlags | CREATE_SUSPENDED,
-								lpEnvironment,
-								lpCurrentDirectory,
-								lpStartupInfo,
-								lpProcessInformation
-							) == TRUE);
+					              hToken,
+					              lpApplicationName,
+					              lpCommandLine,
+					              lpProcessAttributes,
+					              lpThreadAttributes,
+					              bInheritHandles,
+					              dwCreationFlags | CREATE_SUSPENDED,
+					              lpEnvironment,
+					              lpCurrentDirectory,
+					              lpStartupInfo,
+					              lpProcessInformation) == TRUE);
 
-					if(retVal) {
-						if(injectDllDirect(lpProcessInformation->hProcess, lpProcessInformation->hThread, dllFile)) {
-							if(isSuspended) {
+					if (retVal) {
+						if (injectDllDirect(lpProcessInformation->hProcess, lpProcessInformation->hThread, dllFile)) {
+							if (isSuspended) {
 							} else {
 								ResumeThread(lpProcessInformation->hThread);
 							};
@@ -214,38 +209,34 @@ namespace XYO {
 							TerminateProcess(lpProcessInformation->hProcess, 0);
 							retVal = FALSE;
 						};
-
 					};
 					return retVal;
-
 				};
 
-
-
 #define idx_ptr_ptr_loadlibrary 64
-#define idx_ptr_thread_entrypoint (idx_ptr_ptr_loadlibrary+8)
-#define idx_ptr_str (idx_ptr_thread_entrypoint+8)
+#define idx_ptr_thread_entrypoint (idx_ptr_ptr_loadlibrary + 8)
+#define idx_ptr_str (idx_ptr_thread_entrypoint + 8)
 
 #ifdef XYO_APPLICATION_32BIT
 				BOOL injectDllDirect(HANDLE hProcess, HANDLE hThread, const char *dllFile) {
 					CONTEXT Context;
-					BYTE    *PocessMem;
-					DWORD   ThreadEntryPoint;
-					DWORD   ptr_LoadLibraryA;
-					DWORD   ptr_ptr_LoadLibraryA;
-					DWORD   ptr_Str;
-					DWORD   ptr_ThreadEntryPoint;
-					BYTE    ThisMem[4096];
-					INT     k_;
+					BYTE *PocessMem;
+					DWORD ThreadEntryPoint;
+					DWORD ptr_LoadLibraryA;
+					DWORD ptr_ptr_LoadLibraryA;
+					DWORD ptr_Str;
+					DWORD ptr_ThreadEntryPoint;
+					BYTE ThisMem[4096];
+					INT k_;
 					INT ip;
 
 					PocessMem = (BYTE *)VirtualAllocEx(hProcess, 0, 4096, MEM_RESERVE | MEM_COMMIT, PAGE_EXECUTE_READWRITE);
-					if(PocessMem == NULL) {
+					if (PocessMem == NULL) {
 						return FALSE;
 					};
 
 					Context.ContextFlags = CONTEXT_CONTROL;
-					if(!GetThreadContext(hThread, &Context)) {
+					if (!GetThreadContext(hThread, &Context)) {
 						VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
 						return FALSE;
 					};
@@ -255,7 +246,7 @@ namespace XYO {
 					FillMemory(ThisMem, 4096, 0xC3); // ret
 
 					HMODULE hKernel32 = GetModuleHandle("KERNEL32.DLL");
-					if(hKernel32 == NULL) {
+					if (hKernel32 == NULL) {
 						VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
 						return FALSE;
 					};
@@ -266,11 +257,10 @@ namespace XYO {
 
 					MoveMemory(&ThisMem[idx_ptr_ptr_loadlibrary], &ptr_LoadLibraryA, 4);
 					MoveMemory(&ThisMem[idx_ptr_thread_entrypoint], &ThreadEntryPoint, 4);
-					for(k_ = 0; dllFile[k_] != 0; ++k_) {
+					for (k_ = 0; dllFile[k_] != 0; ++k_) {
 						ThisMem[idx_ptr_str + k_] = dllFile[k_];
 					};
 					ThisMem[idx_ptr_str + k_] = 0;
-
 
 					ip = 0;
 
@@ -304,7 +294,7 @@ namespace XYO {
 					MoveMemory(&ThisMem[ip], &ptr_ThreadEntryPoint, 4);
 					ip += 4;
 
-					if(!WriteProcessMemory(hProcess, PocessMem, ThisMem, 4096, NULL)) {
+					if (!WriteProcessMemory(hProcess, PocessMem, ThisMem, 4096, NULL)) {
 						VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
 						return FALSE;
 					};
@@ -312,14 +302,14 @@ namespace XYO {
 					FlushInstructionCache(hProcess, PocessMem, 4096);
 
 					Context.ContextFlags = CONTEXT_CONTROL;
-					if(!GetThreadContext(hThread, &Context)) {
+					if (!GetThreadContext(hThread, &Context)) {
 						VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
 						return FALSE;
 					};
 
 					Context.Eip = (DWORD)PocessMem;
 
-					if(!SetThreadContext(hThread, &Context)) {
+					if (!SetThreadContext(hThread, &Context)) {
 						VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
 						return FALSE;
 					};
@@ -328,11 +318,10 @@ namespace XYO {
 				};
 #endif
 
-
 #ifdef XYO_APPLICATION_64BIT
 				BOOL injectDllDirect(HANDLE hProcess, HANDLE hThread, const char *dllFile) {
 					CONTEXT Context;
-					BYTE    *PocessMem;
+					BYTE *PocessMem;
 
 					DWORD64 ThreadEntryPoint;
 					DWORD64 ptr_LoadLibraryA;
@@ -340,17 +329,17 @@ namespace XYO {
 					DWORD64 ptr_Str;
 					DWORD64 ptr_ThreadEntryPoint;
 
-					BYTE    ThisMem[4096];
-					INT     k_;
+					BYTE ThisMem[4096];
+					INT k_;
 					INT ip;
 
 					PocessMem = (BYTE *)VirtualAllocEx(hProcess, 0, 4096, MEM_RESERVE | MEM_COMMIT, PAGE_EXECUTE_READWRITE);
-					if(PocessMem == NULL) {						
-  						return FALSE;
+					if (PocessMem == NULL) {
+						return FALSE;
 					};
 
 					Context.ContextFlags = CONTEXT_CONTROL;
-					if(!GetThreadContext(hThread, &Context)) {
+					if (!GetThreadContext(hThread, &Context)) {
 						VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
 						return FALSE;
 					};
@@ -360,7 +349,7 @@ namespace XYO {
 					FillMemory(ThisMem, 4096, 0xC3); // ret
 
 					HMODULE hKernel32 = GetModuleHandle("KERNEL32.DLL");
-					if(hKernel32 == NULL) {
+					if (hKernel32 == NULL) {
 						VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
 						return FALSE;
 					};
@@ -372,18 +361,18 @@ namespace XYO {
 					MoveMemory(&ThisMem[idx_ptr_ptr_loadlibrary], &ptr_LoadLibraryA, 8);
 					MoveMemory(&ThisMem[idx_ptr_thread_entrypoint], &ThreadEntryPoint, 8);
 
-					for(k_ = 0; dllFile[k_] != 0; ++k_) {
+					for (k_ = 0; dllFile[k_] != 0; ++k_) {
 						ThisMem[idx_ptr_str + k_] = dllFile[k_];
 					};
 					ThisMem[idx_ptr_str + k_] = 0;
 
 					ip = 0;
 
-					//51 push rcx
+					// 51 push rcx
 					ThisMem[ip] = 0x51;
 					ip += 1;
 
-					//48 83 EC 28        sub         rsp,28h  - using 50h for safe execution
+					// 48 83 EC 28        sub         rsp,28h  - using 50h for safe execution
 					ThisMem[ip] = 0x48;
 					ip += 1;
 					ThisMem[ip] = 0x83;
@@ -443,7 +432,7 @@ namespace XYO {
 					ThisMem[ip] = 0xE0;
 					ip += 1;
 
-					if(!WriteProcessMemory(hProcess, PocessMem, ThisMem, 4096, NULL)) {
+					if (!WriteProcessMemory(hProcess, PocessMem, ThisMem, 4096, NULL)) {
 						VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
 						return FALSE;
 					};
@@ -451,14 +440,14 @@ namespace XYO {
 					FlushInstructionCache(hProcess, PocessMem, 4096);
 
 					Context.ContextFlags = CONTEXT_CONTROL;
-					if(!GetThreadContext(hThread, &Context)) {
+					if (!GetThreadContext(hThread, &Context)) {
 						VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
 						return FALSE;
 					};
 
 					Context.Rip = (DWORD64)PocessMem;
 
-					if(!SetThreadContext(hThread, &Context)) {
+					if (!SetThreadContext(hThread, &Context)) {
 						VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
 						return FALSE;
 					};
@@ -471,4 +460,3 @@ namespace XYO {
 		};
 	};
 };
-

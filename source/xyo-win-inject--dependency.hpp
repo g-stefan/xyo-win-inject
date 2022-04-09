@@ -11,15 +11,15 @@
 #define XYO_WIN_INJECT__DEPENDENCY_HPP
 
 #ifndef XYO_HPP
-#include "xyo.hpp"
+#	include "xyo.hpp"
 #endif
 
 #ifndef XYO_WIN_INJECT__EXPORT_HPP
-#include "xyo-win-inject--export.hpp"
+#	include "xyo-win-inject--export.hpp"
 #endif
 
 #ifndef XYO_WIN_INJECT__CONFIG_HPP
-#include "xyo-win-inject--config.hpp"
+#	include "xyo-win-inject--config.hpp"
 #endif
 
 #endif

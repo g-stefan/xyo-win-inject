@@ -13,7 +13,7 @@
 #include "xyo-win-inject-copyright.hpp"
 #include "xyo-win-inject-license.hpp"
 #ifndef XYO_WIN_INJECT_NO_VERSION
-#include "xyo-win-inject-version.hpp"
+#	include "xyo-win-inject-version.hpp"
 #endif
 
 #include "xyo-win-inject--dependency.hpp"
@@ -21,4 +21,3 @@
 #include "xyo-win-inject-hook.hpp"
 
 #endif
-

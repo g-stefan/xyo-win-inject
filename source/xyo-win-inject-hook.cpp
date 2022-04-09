@@ -13,14 +13,14 @@
 #include "xyo-win-inject-hook.hpp"
 
 #ifdef XYO_APPLICATION_32BIT
-#define mPointer(type_,value_,offset_) (type_)((BYTE *)(value_)+(DWORD)(offset_))
-#define procSize 4
-#define PROCTYPE DWORD
+#	define mPointer(type_, value_, offset_) (type_)((BYTE *)(value_) + (DWORD)(offset_))
+#	define procSize 4
+#	define PROCTYPE DWORD
 #endif
 #ifdef XYO_APPLICATION_64BIT
-#define mPointer(type_,value_,offset_) (type_)((BYTE *)(value_)+(DWORD64)(offset_))
-#define procSize 8
-#define PROCTYPE DWORD64
+#	define mPointer(type_, value_, offset_) (type_)((BYTE *)(value_) + (DWORD64)(offset_))
+#	define procSize 8
+#	define PROCTYPE DWORD64
 #endif
 
 namespace XYO {
@@ -39,24 +39,24 @@ namespace XYO {
 					HookProc **scanList;
 					bool found;
 
-					if(hModule != nullptr) {
+					if (hModule != nullptr) {
 						dosHeader = (PIMAGE_DOS_HEADER)hModule;
-						if(dosHeader->e_magic == IMAGE_DOS_SIGNATURE) {
+						if (dosHeader->e_magic == IMAGE_DOS_SIGNATURE) {
 							ntHeaders = mPointer(PIMAGE_NT_HEADERS, dosHeader, dosHeader->e_lfanew);
-							if(ntHeaders->Signature == IMAGE_NT_SIGNATURE) {
+							if (ntHeaders->Signature == IMAGE_NT_SIGNATURE) {
 								importDescriptor = mPointer(PIMAGE_IMPORT_DESCRIPTOR, dosHeader, ntHeaders->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT].VirtualAddress);
-								if(importDescriptor > (PIMAGE_IMPORT_DESCRIPTOR)ntHeaders) {
-									for(; importDescriptor->Name; ++importDescriptor) {
-										for(thunkData = mPointer(PIMAGE_THUNK_DATA, dosHeader, importDescriptor->FirstThunk); thunkData->u1.Function; ++thunkData) {
-											for(scanList = hookList; *scanList != nullptr; ++scanList) {
-												if((FARPROC)thunkData->u1.Function == (FARPROC)(*scanList)->originalProc) {
-													if(VirtualProtect(&thunkData->u1.Function, procSize,
-															PAGE_EXECUTE_READWRITE, &dwOld)) {
+								if (importDescriptor > (PIMAGE_IMPORT_DESCRIPTOR)ntHeaders) {
+									for (; importDescriptor->Name; ++importDescriptor) {
+										for (thunkData = mPointer(PIMAGE_THUNK_DATA, dosHeader, importDescriptor->FirstThunk); thunkData->u1.Function; ++thunkData) {
+											for (scanList = hookList; *scanList != nullptr; ++scanList) {
+												if ((FARPROC)thunkData->u1.Function == (FARPROC)(*scanList)->originalProc) {
+													if (VirtualProtect(&thunkData->u1.Function, procSize,
+													                   PAGE_EXECUTE_READWRITE, &dwOld)) {
 
 														thunkData->u1.Function = (PROCTYPE)(*scanList)->newProc;
 
 														VirtualProtect(&thunkData->u1.Function, procSize,
-															dwOld, &dw);
+														               dwOld, &dw);
 													};
 													break;
 												};
@@ -74,14 +74,14 @@ namespace XYO {
 					PIMAGE_NT_HEADERS ntHeaders;
 					PIMAGE_IMPORT_DESCRIPTOR importDescriptor;
 
-					if(hModule != nullptr) {
+					if (hModule != nullptr) {
 						dosHeader = (PIMAGE_DOS_HEADER)hModule;
-						if(dosHeader->e_magic == IMAGE_DOS_SIGNATURE) {
+						if (dosHeader->e_magic == IMAGE_DOS_SIGNATURE) {
 							ntHeaders = mPointer(PIMAGE_NT_HEADERS, dosHeader, dosHeader->e_lfanew);
-							if(ntHeaders->Signature == IMAGE_NT_SIGNATURE) {
+							if (ntHeaders->Signature == IMAGE_NT_SIGNATURE) {
 								importDescriptor = mPointer(PIMAGE_IMPORT_DESCRIPTOR, dosHeader, ntHeaders->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT].VirtualAddress);
-								if(importDescriptor > (PIMAGE_IMPORT_DESCRIPTOR)ntHeaders) {
-									for(; importDescriptor->Name; ++importDescriptor) {
+								if (importDescriptor > (PIMAGE_IMPORT_DESCRIPTOR)ntHeaders) {
+									for (; importDescriptor->Name; ++importDescriptor) {
 										if ((*iEnum)(userData, mPointer(LPSTR, dosHeader, importDescriptor->Name))) {
 										} else {
 											return TRUE;
@@ -101,20 +101,20 @@ namespace XYO {
 					DWORD *procNames;
 					DWORD procIndex;
 
-					if(IS_INTRESOURCE(procName)) {
+					if (IS_INTRESOURCE(procName)) {
 						return procName;
 					};
 
-					if(hModule != nullptr) {
+					if (hModule != nullptr) {
 						dosHeader = (PIMAGE_DOS_HEADER)hModule;
-						if(dosHeader->e_magic == IMAGE_DOS_SIGNATURE) {
+						if (dosHeader->e_magic == IMAGE_DOS_SIGNATURE) {
 							ntHeaders = mPointer(PIMAGE_NT_HEADERS, dosHeader, dosHeader->e_lfanew);
-							if(ntHeaders->Signature == IMAGE_NT_SIGNATURE) {
+							if (ntHeaders->Signature == IMAGE_NT_SIGNATURE) {
 								exportDescriptor = mPointer(PIMAGE_EXPORT_DIRECTORY, dosHeader, ntHeaders->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_EXPORT].VirtualAddress);
-								if(exportDescriptor > (PIMAGE_EXPORT_DIRECTORY)ntHeaders) {
+								if (exportDescriptor > (PIMAGE_EXPORT_DIRECTORY)ntHeaders) {
 									procNames = mPointer(DWORD *, dosHeader, exportDescriptor->AddressOfNames);
-									for(procIndex = 0; procIndex < exportDescriptor->NumberOfNames; ++procIndex) {
-										if(StringCore::compareIgnoreCaseAscii(mPointer(LPSTR, dosHeader, procNames[procIndex]), procName) == 0) {
+									for (procIndex = 0; procIndex < exportDescriptor->NumberOfNames; ++procIndex) {
+										if (StringCore::compareIgnoreCaseAscii(mPointer(LPSTR, dosHeader, procNames[procIndex]), procName) == 0) {
 											return MAKEINTRESOURCEA(exportDescriptor->Base + ((mPointer(WORD *, dosHeader, exportDescriptor->AddressOfNameOrdinals))[procIndex]));
 										};
 									};
@@ -131,19 +131,19 @@ namespace XYO {
 					PIMAGE_EXPORT_DIRECTORY exportDescriptor;
 					DWORD procIndex;
 
-					if(!IS_INTRESOURCE(procOrdinal)) {
+					if (!IS_INTRESOURCE(procOrdinal)) {
 						return procOrdinal;
 					};
 
-					if(hModule != nullptr) {
+					if (hModule != nullptr) {
 						dosHeader = (PIMAGE_DOS_HEADER)hModule;
-						if(dosHeader->e_magic == IMAGE_DOS_SIGNATURE) {
+						if (dosHeader->e_magic == IMAGE_DOS_SIGNATURE) {
 							ntHeaders = mPointer(PIMAGE_NT_HEADERS, dosHeader, dosHeader->e_lfanew);
-							if(ntHeaders->Signature == IMAGE_NT_SIGNATURE) {
+							if (ntHeaders->Signature == IMAGE_NT_SIGNATURE) {
 								exportDescriptor = mPointer(PIMAGE_EXPORT_DIRECTORY, dosHeader, ntHeaders->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_EXPORT].VirtualAddress);
-								if(exportDescriptor > (PIMAGE_EXPORT_DIRECTORY)ntHeaders) {
-									for(procIndex = 0; procIndex < exportDescriptor->NumberOfNames; ++procIndex) {
-										if(MAKEINTRESOURCEA(exportDescriptor->Base + ((mPointer(WORD *, dosHeader, exportDescriptor->AddressOfNameOrdinals))[procIndex])) == procOrdinal) {
+								if (exportDescriptor > (PIMAGE_EXPORT_DIRECTORY)ntHeaders) {
+									for (procIndex = 0; procIndex < exportDescriptor->NumberOfNames; ++procIndex) {
+										if (MAKEINTRESOURCEA(exportDescriptor->Base + ((mPointer(WORD *, dosHeader, exportDescriptor->AddressOfNameOrdinals))[procIndex])) == procOrdinal) {
 											return mPointer(LPSTR, dosHeader, (mPointer(DWORD *, dosHeader, exportDescriptor->AddressOfNames))[procIndex]);
 										};
 									};
@@ -163,10 +163,10 @@ namespace XYO {
 					hook.procOrdinal = nullptr;
 
 					HMODULE hModule = GetModuleHandle(moduleName);
-					if(hModule == nullptr) {
+					if (hModule == nullptr) {
 						hModule = LoadLibrary(moduleName);
 					};
-					if(hModule != nullptr) {
+					if (hModule != nullptr) {
 						hook.hModule = hModule;
 						hook.newProc = newProc;
 						hook.originalProc = GetProcAddress(hModule, procName);
@@ -181,12 +181,12 @@ namespace XYO {
 					PIMAGE_IMPORT_DESCRIPTOR importDescriptor;
 					size_t index;
 
-					if(hModule == nullptr) {
+					if (hModule == nullptr) {
 						return false;
 					};
 
-					for(index = 0; index < processedListIndex; ++index) {
-						if(hModule == processedList[index]) {
+					for (index = 0; index < processedListIndex; ++index) {
+						if (hModule == processedList[index]) {
 							return false;
 						};
 					};
@@ -194,8 +194,8 @@ namespace XYO {
 					processedList[processedListIndex] = hModule;
 					++processedListIndex;
 
-					for(index = 0; skipList[index] != nullptr; ++index) {
-						if(hModule == GetModuleHandle(skipList[index])) {
+					for (index = 0; skipList[index] != nullptr; ++index) {
+						if (hModule == GetModuleHandle(skipList[index])) {
 							return false;
 						};
 					};
@@ -203,12 +203,12 @@ namespace XYO {
 					replaceFunction(hModule, hookList);
 
 					dosHeader = (PIMAGE_DOS_HEADER)hModule;
-					if(dosHeader->e_magic == IMAGE_DOS_SIGNATURE) {
+					if (dosHeader->e_magic == IMAGE_DOS_SIGNATURE) {
 						ntHeaders = mPointer(PIMAGE_NT_HEADERS, dosHeader, dosHeader->e_lfanew);
-						if(ntHeaders->Signature == IMAGE_NT_SIGNATURE) {
+						if (ntHeaders->Signature == IMAGE_NT_SIGNATURE) {
 							importDescriptor = mPointer(PIMAGE_IMPORT_DESCRIPTOR, dosHeader, ntHeaders->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT].VirtualAddress);
-							if(importDescriptor > (PIMAGE_IMPORT_DESCRIPTOR)ntHeaders) {
-								for(; importDescriptor->Name; ++importDescriptor) {
+							if (importDescriptor > (PIMAGE_IMPORT_DESCRIPTOR)ntHeaders) {
+								for (; importDescriptor->Name; ++importDescriptor) {
 									processModule(GetModuleHandle(mPointer(LPSTR, dosHeader, importDescriptor->Name)), hookList, processedList, processedListIndex, processedListSize, skipList);
 								};
 							};
@@ -220,19 +220,19 @@ namespace XYO {
 
 				FARPROC getProcAddress(HMODULE hModule, LPCSTR lpProcName, HookProc **hookList) {
 					HookProc **scanList;
-					if(IS_INTRESOURCE(lpProcName)) {
-						for(scanList = hookList; *scanList != nullptr; ++scanList) {
-							if((*scanList)->hModule == hModule) {
-								if((*scanList)->procOrdinal == lpProcName) {
+					if (IS_INTRESOURCE(lpProcName)) {
+						for (scanList = hookList; *scanList != nullptr; ++scanList) {
+							if ((*scanList)->hModule == hModule) {
+								if ((*scanList)->procOrdinal == lpProcName) {
 									return (*scanList)->newProc;
 								};
 							};
 						};
 						return nullptr;
 					};
-					for(scanList = hookList; *scanList != nullptr; ++scanList) {
-						if((*scanList)->hModule == hModule) {
-							if(StringCore::compareIgnoreCaseAscii((*scanList)->procName, lpProcName) == 0) {
+					for (scanList = hookList; *scanList != nullptr; ++scanList) {
+						if ((*scanList)->hModule == hModule) {
+							if (StringCore::compareIgnoreCaseAscii((*scanList)->procName, lpProcName) == 0) {
 								return (*scanList)->newProc;
 							};
 						};
@@ -244,9 +244,3 @@ namespace XYO {
 		};
 	};
 };
-
-
-
-
-
-

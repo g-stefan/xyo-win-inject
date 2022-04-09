@@ -14,10 +14,10 @@ namespace XYO {
 		namespace Inject {
 			namespace Version {
 
-				static const char *version_ = "1.11.0";
-				static const char *build_ = "23";
-				static const char *versionWithBuild_ = "1.11.0.23";
-				static const char *datetime_ = "2022-01-09 01:13:16";
+				static const char *version_ = "1.12.0";
+				static const char *build_ = "25";
+				static const char *versionWithBuild_ = "1.12.0.25";
+				static const char *datetime_ = "2022-04-04 01:45:00";
 
 				const char *version() {
 					return version_;
@@ -36,5 +36,3 @@ namespace XYO {
 		};
 	};
 };
-
-

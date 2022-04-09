@@ -11,7 +11,7 @@
 #define XYO_WIN_INJECT_HOOK_HPP
 
 #ifndef XYO_WIN_INJECT__DEPENDENCY_HPP
-#include "xyo-win-inject--dependency.hpp"
+#	include "xyo-win-inject--dependency.hpp"
 #endif
 
 namespace XYO {
@@ -20,14 +20,14 @@ namespace XYO {
 			namespace Hook {
 
 				typedef struct SHookProc {
-					HANDLE hModule;
-					FARPROC newProc;
-					FARPROC originalProc;
-					LPSTR procName;
-					LPSTR procOrdinal;
+						HANDLE hModule;
+						FARPROC newProc;
+						FARPROC originalProc;
+						LPSTR procName;
+						LPSTR procOrdinal;
 				} HookProc;
 
-				typedef BOOL (WINAPI *IEnumImportModuleName)(PVOID userData, LPSTR module);
+				typedef BOOL(WINAPI *IEnumImportModuleName)(PVOID userData, LPSTR module);
 				XYO_WIN_INJECT_EXPORT BOOL enumImportTable(HMODULE hModule, IEnumImportModuleName iEnum, PVOID userData);
 				XYO_WIN_INJECT_EXPORT void replaceFunction(HMODULE hModule, HookProc **hookList);
 				XYO_WIN_INJECT_EXPORT LPSTR getProcOrdinal(HMODULE hModule, LPSTR procName);
@@ -42,4 +42,3 @@ namespace XYO {
 };
 
 #endif
-

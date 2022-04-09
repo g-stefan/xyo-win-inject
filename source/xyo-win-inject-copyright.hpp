@@ -10,17 +10,17 @@
 #ifndef XYO_WIN_INJECT_COPYRIGHT_HPP
 #define XYO_WIN_INJECT_COPYRIGHT_HPP
 
-#define XYO_WIN_INJECT_COPYRIGHT            "Copyright (c) Grigore Stefan"
-#define XYO_WIN_INJECT_PUBLISHER            "Grigore Stefan"
-#define XYO_WIN_INJECT_COMPANY              XYO_WIN_INJECT_PUBLISHER
-#define XYO_WIN_INJECT_CONTACT              "g_stefan@yahoo.com"
-#define XYO_WIN_INJECT_FULL_COPYRIGHT       XYO_WIN_INJECT_COPYRIGHT " <" XYO_WIN_INJECT_CONTACT ">"
+#define XYO_WIN_INJECT_COPYRIGHT "Copyright (c) Grigore Stefan"
+#define XYO_WIN_INJECT_PUBLISHER "Grigore Stefan"
+#define XYO_WIN_INJECT_COMPANY XYO_WIN_INJECT_PUBLISHER
+#define XYO_WIN_INJECT_CONTACT "g_stefan@yahoo.com"
+#define XYO_WIN_INJECT_FULL_COPYRIGHT XYO_WIN_INJECT_COPYRIGHT " <" XYO_WIN_INJECT_CONTACT ">"
 
 #ifndef XYO_RC
 
-#ifndef XYO_WIN_INJECT__EXPORT_HPP
-#include "xyo-win-inject--export.hpp"
-#endif
+#	ifndef XYO_WIN_INJECT__EXPORT_HPP
+#		include "xyo-win-inject--export.hpp"
+#	endif
 
 namespace XYO {
 	namespace Win {

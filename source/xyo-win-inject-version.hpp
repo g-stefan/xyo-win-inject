@@ -10,16 +10,16 @@
 #ifndef XYO_WIN_INJECT_VERSION_HPP
 #define XYO_WIN_INJECT_VERSION_HPP
 
-#define XYO_WIN_INJECT_VERSION_ABCD                 1,11,0,23
-#define XYO_WIN_INJECT_VERSION_STR                 "1.11.0"
-#define XYO_WIN_INJECT_VERSION_STR_BUILD           "23"
-#define XYO_WIN_INJECT_VERSION_STR_DATETIME        "2022-01-09 01:13:16"
+#define XYO_WIN_INJECT_VERSION_ABCD 1,12,0,25
+#define XYO_WIN_INJECT_VERSION_STR "1.12.0"
+#define XYO_WIN_INJECT_VERSION_STR_BUILD "25"
+#define XYO_WIN_INJECT_VERSION_STR_DATETIME "2022-04-04 01:45:00"
 
 #ifndef XYO_RC
 
-#ifndef XYO_WIN_INJECT__EXPORT_HPP
-#include "xyo-win-inject--export.hpp"
-#endif
+#	ifndef XYO_WIN_INJECT__EXPORT_HPP
+#		include "xyo-win-inject--export.hpp"
+#	endif
 
 namespace XYO {
 	namespace Win {
@@ -36,4 +36,3 @@ namespace XYO {
 
 #endif
 #endif
-
