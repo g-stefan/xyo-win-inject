@@ -1,3 +1,0 @@
---lib xyo-win-inject
---build-include
---use-project=xyo-win.static

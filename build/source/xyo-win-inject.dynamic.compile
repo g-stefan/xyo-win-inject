@@ -1,4 +1,0 @@
---dll xyo-win-inject
---build-include
---no-version
---use-project=xyo-win

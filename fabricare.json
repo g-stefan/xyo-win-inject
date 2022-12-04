@@ -1,0 +1,19 @@
+{
+	"project": {
+		"name":"xyo-win-inject",
+		"type":"xyo-cpp",
+		"make" : "lib-and-dll",
+		"SPDX-License-Identifier": "MIT",
+		"sourcePath" : [
+			"XYO/WinInject"
+		],
+		"dependency" : [
+			"xyo-win"
+		],
+		"library" : [
+			"secur32",
+			"adsiid",
+			"activeds"
+		]
+	}
+}
