@@ -7,10 +7,9 @@
 #ifndef XYO_WININJECT_COPYRIGHT_RH
 #define XYO_WININJECT_COPYRIGHT_RH
 
-#define XYO_WININJECT_COPYRIGHT "Copyright (c) 2022 Grigore Stefan"
+#define XYO_WININJECT_COPYRIGHT "Copyright (c) 2022 Grigore Stefan <g_stefan@yahoo.com>"
 #define XYO_WININJECT_PUBLISHER "Grigore Stefan"
 #define XYO_WININJECT_COMPANY XYO_WININJECT_PUBLISHER
 #define XYO_WININJECT_CONTACT "g_stefan@yahoo.com"
-#define XYO_WININJECT_FULL_COPYRIGHT XYO_WININJECT_COPYRIGHT " <" XYO_WININJECT_CONTACT ">"
 
 #endif

@@ -13,8 +13,7 @@
 
 namespace XYO::Win::Inject::License {
 
-	XYO_WININJECT_EXPORT const char *licenseHeader();
-	XYO_WININJECT_EXPORT const char *licenseBody();
+	XYO_WININJECT_EXPORT const char *license();
 	XYO_WININJECT_EXPORT const char *shortLicense();
 
 };
