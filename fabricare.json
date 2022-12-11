@@ -9,11 +9,6 @@
 		],
 		"dependency" : [
 			"xyo-win"
-		],
-		"library" : [
-			"secur32",
-			"adsiid",
-			"activeds"
 		]
 	}
 }
