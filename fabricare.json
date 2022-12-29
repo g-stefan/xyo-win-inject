@@ -9,6 +9,8 @@
 		],
 		"dependency" : [
 			"xyo-win"
-		]
+		],
+		"hasRelease" : true,
+		"githubRelease" : true
 	}
 }
