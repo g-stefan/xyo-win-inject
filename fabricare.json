@@ -1,16 +1,20 @@
 {
-	"project": {
-		"name":"xyo-win-inject",
-		"type":"xyo-cpp",
-		"make" : "lib-and-dll",
-		"SPDX-License-Identifier": "MIT",
-		"sourcePath" : [
-			"XYO/WinInject"
+	"solution": {
+		"name" : "xyo-win-inject",
+		"type" : "xyo-cpp",
+		"projects": [
+			{
+				"name" : "xyo-win-inject",
+				"make" : "lib-and-dll",
+				"SPDX-License-Identifier": "MIT",
+				"sourcePath" : [
+					"XYO/WinInject"
+				],
+				"dependency" : [
+					"xyo-win"
+				]
+			}
 		],
-		"dependency" : [
-			"xyo-win"
-		],
-		"hasRelease" : true,
-		"githubRelease" : true
+		"hasGithub" : true
 	}
 }
