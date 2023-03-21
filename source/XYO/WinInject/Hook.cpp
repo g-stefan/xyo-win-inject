@@ -44,9 +44,9 @@ namespace XYO::Win::Inject::Hook {
 							for (thunkData = mPointer(PIMAGE_THUNK_DATA, dosHeader, importDescriptor->FirstThunk); thunkData->u1.Function; ++thunkData) {
 								for (scanList = hookList; *scanList != nullptr; ++scanList) {
 									if ((FARPROC)thunkData->u1.Function == (FARPROC)(*scanList)->originalProc) {
-										if (VirtualProtect(&thunkData->u1.Function, procSize,PAGE_EXECUTE_READWRITE, &dwOld)) {
+										if (VirtualProtect(&thunkData->u1.Function, procSize, PAGE_EXECUTE_READWRITE, &dwOld)) {
 											thunkData->u1.Function = (PROCTYPE)(*scanList)->newProc;
-											VirtualProtect(&thunkData->u1.Function, procSize,dwOld, &dw);
+											VirtualProtect(&thunkData->u1.Function, procSize, dwOld, &dw);
 										};
 										break;
 									};
