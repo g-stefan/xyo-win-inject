@@ -9,12 +9,12 @@
 
 #include <XYO/WinInject/Hook.hpp>
 
-#ifdef XYO_APPLICATION_32BIT
+#ifdef XYO_PLATFORM_32BIT
 #	define mPointer(type_, value_, offset_) (type_)((BYTE *)(value_) + (DWORD)(offset_))
 #	define procSize 4
 #	define PROCTYPE DWORD
 #endif
-#ifdef XYO_APPLICATION_64BIT
+#ifdef XYO_PLATFORM_64BIT
 #	define mPointer(type_, value_, offset_) (type_)((BYTE *)(value_) + (DWORD64)(offset_))
 #	define procSize 8
 #	define PROCTYPE DWORD64

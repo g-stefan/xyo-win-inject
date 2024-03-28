@@ -8,4 +8,4 @@
 #include <XYO/WinInject/Copyright.rh>
 #include <XYO/WinInject/Version.rh>
 
-XYO_APPLICATION_VERSION_INFO(XYO_WININJECT,"xyo-win-inject.dll","XYO Win Inject")
+XYO_PLATFORM_VERSION_INFO(XYO_WININJECT,"xyo-win-inject.dll","XYO Win Inject")

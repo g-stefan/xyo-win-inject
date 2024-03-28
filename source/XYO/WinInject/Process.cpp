@@ -211,7 +211,7 @@ namespace XYO::Win::Inject::Process {
 #define idx_ptr_thread_entrypoint (idx_ptr_ptr_loadlibrary + 8)
 #define idx_ptr_str (idx_ptr_thread_entrypoint + 8)
 
-#ifdef XYO_APPLICATION_32BIT
+#ifdef XYO_PLATFORM_32BIT
 	BOOL injectDllDirect(HANDLE hProcess, HANDLE hThread, const char *dllFile) {
 		CONTEXT Context;
 		BYTE *PocessMem;
@@ -312,7 +312,7 @@ namespace XYO::Win::Inject::Process {
 	};
 #endif
 
-#ifdef XYO_APPLICATION_64BIT
+#ifdef XYO_PLATFORM_64BIT
 	BOOL injectDllDirect(HANDLE hProcess, HANDLE hThread, const char *dllFile) {
 		CONTEXT Context;
 		BYTE *PocessMem;
