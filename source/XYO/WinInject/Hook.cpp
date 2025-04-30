@@ -1,7 +1,7 @@
 // Win Inject
-// Copyright (c) 2014-2024 Grigore Stefan <g_stefan@yahoo.com>
+// Copyright (c) 2014-2025 Grigore Stefan <g_stefan@yahoo.com>
 // MIT License (MIT) <http://opensource.org/licenses/MIT>
-// SPDX-FileCopyrightText: 2014-2024 Grigore Stefan <g_stefan@yahoo.com>
+// SPDX-FileCopyrightText: 2014-2025 Grigore Stefan <g_stefan@yahoo.com>
 // SPDX-License-Identifier: MIT
 
 #include <windows.h>
@@ -104,7 +104,7 @@ namespace XYO::Win::Inject::Hook {
 					if (exportDescriptor > (PIMAGE_EXPORT_DIRECTORY)ntHeaders) {
 						procNames = mPointer(DWORD *, dosHeader, exportDescriptor->AddressOfNames);
 						for (procIndex = 0; procIndex < exportDescriptor->NumberOfNames; ++procIndex) {
-							if (StringCore::compareIgnoreCaseAscii(mPointer(LPSTR, dosHeader, procNames[procIndex]), procName) == 0) {
+							if (StringCore::compareIgnoreCaseASCII(mPointer(LPSTR, dosHeader, procNames[procIndex]), procName) == 0) {
 								return MAKEINTRESOURCEA(exportDescriptor->Base + ((mPointer(WORD *, dosHeader, exportDescriptor->AddressOfNameOrdinals))[procIndex]));
 							};
 						};
@@ -222,7 +222,7 @@ namespace XYO::Win::Inject::Hook {
 		};
 		for (scanList = hookList; *scanList != nullptr; ++scanList) {
 			if ((*scanList)->hModule == hModule) {
-				if (StringCore::compareIgnoreCaseAscii((*scanList)->procName, lpProcName) == 0) {
+				if (StringCore::compareIgnoreCaseASCII((*scanList)->procName, lpProcName) == 0) {
 					return (*scanList)->newProc;
 				};
 			};
