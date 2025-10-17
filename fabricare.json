@@ -24,6 +24,9 @@
 				"dependency": [
 					"xyo-win"
 				],
+				"dependencyDefines" : [
+					"XYO_WININJECT_LIBRARY"
+				],
 				"crt": "static",
 				"linkVersion": "xyo-win-inject"
 			}
