@@ -11,7 +11,7 @@
 			},
 			"linux": {
 				"command": "/bin/sh -- build.sh",
-			}
+			},
 			"problemMatcher": [
 				"$msCompile", "$gcc"
 			],
@@ -28,7 +28,7 @@
 			},
 			"linux": {
 				"command": "/bin/sh -- build.sh analyze",
-			}
+			},
 			"problemMatcher": [
 				"$msCompile", "$gcc"
 			]
@@ -41,7 +41,7 @@
 			},
 			"linux": {
 				"command": "/bin/sh -- build.sh clean",
-			}
+			},
 			"problemMatcher": [
 				"$msCompile", "$gcc"
 			]
@@ -54,7 +54,7 @@
 			},
 			"linux": {
 				"command": "/bin/sh -- build.sh install",
-			}
+			},
 			"problemMatcher": [
 				"$msCompile", "$gcc"
 			]
@@ -67,7 +67,7 @@
 			},
 			"linux": {
 				"command": "/bin/sh -- build.sh version",
-			}
+			},
 			"problemMatcher": [
 				"$msCompile", "$gcc"
 			]

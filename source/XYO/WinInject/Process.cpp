@@ -13,8 +13,16 @@ namespace XYO::Win::Inject::Process {
 	BOOL injectDll(char *cmdLine, const char *dllFile) {
 		STARTUPINFO SInfo;
 		PROCESS_INFORMATION PInfo;
+		BOOL retVal;
 		ZeroMemory(&SInfo, sizeof(SInfo));
-		return createProcessA(0, cmdLine, 0, 0, FALSE, 0, 0, 0, &SInfo, &PInfo, dllFile);
+		SInfo.cb = sizeof(SInfo);
+		ZeroMemory(&PInfo, sizeof(PInfo));
+		retVal = createProcessA(0, cmdLine, 0, 0, FALSE, 0, 0, 0, &SInfo, &PInfo, dllFile);
+		if (retVal) {
+			CloseHandle(PInfo.hThread);
+			CloseHandle(PInfo.hProcess);
+		};
+		return retVal;
 	};
 
 	BOOL injectDllAndWait(char *cmdLine, const char *dllFile) {
@@ -22,9 +30,13 @@ namespace XYO::Win::Inject::Process {
 		PROCESS_INFORMATION PInfo;
 		BOOL retVal;
 		ZeroMemory(&SInfo, sizeof(SInfo));
+		SInfo.cb = sizeof(SInfo);
+		ZeroMemory(&PInfo, sizeof(PInfo));
 		retVal = createProcessA(0, cmdLine, 0, 0, FALSE, 0, 0, 0, &SInfo, &PInfo, dllFile);
 		if (retVal) {
-			WaitForSingleObject(PInfo.hThread, INFINITE);
+			WaitForSingleObject(PInfo.hProcess, INFINITE);
+			CloseHandle(PInfo.hThread);
+			CloseHandle(PInfo.hProcess);
 		};
 		return retVal;
 	};
@@ -223,8 +235,9 @@ namespace XYO::Win::Inject::Process {
 		BYTE ThisMem[4096];
 		INT k_;
 		INT ip;
+		DWORD oldProtect;
 
-		PocessMem = (BYTE *)VirtualAllocEx(hProcess, 0, 4096, MEM_RESERVE | MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+		PocessMem = (BYTE *)VirtualAllocEx(hProcess, 0, 4096, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
 		if (PocessMem == NULL) {
 			return FALSE;
 		};
@@ -244,7 +257,7 @@ namespace XYO::Win::Inject::Process {
 			VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
 			return FALSE;
 		};
-		ptr_LoadLibraryA = (DWORD64)GetProcAddress(hKernel32, "LoadLibraryA");
+		ptr_LoadLibraryA = (DWORD)GetProcAddress(hKernel32, "LoadLibraryA");
 		ptr_Str = (DWORD)&PocessMem[idx_ptr_str];
 		ptr_ptr_LoadLibraryA = (DWORD)&PocessMem[idx_ptr_ptr_loadlibrary];
 		ptr_ThreadEntryPoint = (DWORD)&PocessMem[idx_ptr_thread_entrypoint];
@@ -252,6 +265,10 @@ namespace XYO::Win::Inject::Process {
 		MoveMemory(&ThisMem[idx_ptr_ptr_loadlibrary], &ptr_LoadLibraryA, 4);
 		MoveMemory(&ThisMem[idx_ptr_thread_entrypoint], &ThreadEntryPoint, 4);
 		for (k_ = 0; dllFile[k_] != 0; ++k_) {
+			if ((idx_ptr_str + k_) >= (INT)sizeof(ThisMem) - 1) {
+				VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
+				return FALSE;
+			};
 			ThisMem[idx_ptr_str + k_] = dllFile[k_];
 		};
 		ThisMem[idx_ptr_str + k_] = 0;
@@ -293,6 +310,11 @@ namespace XYO::Win::Inject::Process {
 			return FALSE;
 		};
 
+		if (!VirtualProtectEx(hProcess, PocessMem, 4096, PAGE_EXECUTE_READ, &oldProtect)) {
+			VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
+			return FALSE;
+		};
+
 		FlushInstructionCache(hProcess, PocessMem, 4096);
 
 		Context.ContextFlags = CONTEXT_CONTROL;
@@ -326,8 +348,9 @@ namespace XYO::Win::Inject::Process {
 		BYTE ThisMem[4096];
 		INT k_;
 		INT ip;
+		DWORD oldProtect;
 
-		PocessMem = (BYTE *)VirtualAllocEx(hProcess, 0, 4096, MEM_RESERVE | MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+		PocessMem = (BYTE *)VirtualAllocEx(hProcess, 0, 4096, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
 		if (PocessMem == NULL) {
 			return FALSE;
 		};
@@ -356,6 +379,10 @@ namespace XYO::Win::Inject::Process {
 		MoveMemory(&ThisMem[idx_ptr_thread_entrypoint], &ThreadEntryPoint, 8);
 
 		for (k_ = 0; dllFile[k_] != 0; ++k_) {
+			if ((idx_ptr_str + k_) >= (INT)sizeof(ThisMem) - 1) {
+				VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
+				return FALSE;
+			};
 			ThisMem[idx_ptr_str + k_] = dllFile[k_];
 		};
 		ThisMem[idx_ptr_str + k_] = 0;
@@ -427,6 +454,11 @@ namespace XYO::Win::Inject::Process {
 		ip += 1;
 
 		if (!WriteProcessMemory(hProcess, PocessMem, ThisMem, 4096, NULL)) {
+			VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
+			return FALSE;
+		};
+
+		if (!VirtualProtectEx(hProcess, PocessMem, 4096, PAGE_EXECUTE_READ, &oldProtect)) {
 			VirtualFreeEx(hProcess, PocessMem, 0, MEM_RELEASE);
 			return FALSE;
 		};

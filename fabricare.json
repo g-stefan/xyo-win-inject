@@ -1,5 +1,6 @@
 {
 	"solution": {
+		"namespace" : "xyo",
 		"name": "xyo-win-inject",
 		"type": "xyo-cpp",
 		"projects": [
@@ -29,6 +30,24 @@
 				],
 				"crt": "static",
 				"linkVersion": "xyo-win-inject"
+			},
+			{
+				"name": "test.01",
+				"make": "exe",
+				"category": "test",
+				"SPDX-License-Identifier": "Unlicense",
+				"dependency": [
+					"xyo-win-inject"
+				]
+			},
+			{
+				"name": "test.02",
+				"make": "exe",
+				"category": "test",
+				"SPDX-License-Identifier": "Unlicense",
+				"dependency": [
+					"xyo-win-inject"
+				]
 			}
 		]
 	}
