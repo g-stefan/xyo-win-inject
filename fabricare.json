@@ -1,6 +1,5 @@
 {
 	"solution": {
-		"namespace" : "xyo",
 		"name": "xyo-win-inject",
 		"type": "xyo-cpp",
 		"projects": [
